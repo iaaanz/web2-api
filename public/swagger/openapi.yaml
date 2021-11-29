@@ -1,0 +1,396 @@
+openapi: 3.0.0
+paths:
+  /api/companies/all:
+    get:
+      tags:
+        - Companies
+      description: 'Retorna todas as companhias'
+      operationId: fb5d96ea567971a3b6d09a691e6c8dbe
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/companies:
+    get:
+      tags:
+        - Companies
+      description: 'Retorna uma lista paginada com 50 companhias'
+      operationId: fd83ab693ecdfce3bc43162bd4f7b712
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  '/api/companies/{id}':
+    get:
+      tags:
+        - Companies
+      description: 'Retorna uma comapanhia específica'
+      operationId: b2ab58c9d1b51d6eab1e12cf06c021ca
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'Companie ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  '/api/companies/{id}/users':
+    get:
+      tags:
+        - Companies
+      description: 'Retorna os funcionários vinculados a companhia'
+      operationId: 2d731e2db371567e691b75dde072aec6
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'Companie id'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/companies/new:
+    post:
+      tags:
+        - Companies
+      description: 'Cadastra uma nova companhia'
+      operationId: 6ad67e6b473a4bf21c4e9298f2b97480
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: Body
+          in: query
+          description: ''
+          required: true
+          schema:
+            properties:
+              nome:
+                type: string
+                example: 'Bender Enterprise'
+              telefone:
+                type: string
+                example: '49988548268'
+              cnpj:
+                type: string
+                example: '70528381000161'
+              data:
+                type: string
+                example: 2002/03/21
+            type: object
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/products/all:
+    get:
+      tags:
+        - Products
+      description: 'Retorna todos os produtos'
+      operationId: 42e90b1d91d05c7d5184f48067863d31
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/products:
+    get:
+      tags:
+        - Products
+      description: 'Retorna uma lista paginada com 50 produtos'
+      operationId: dde6a719aa403acb5203aca048997a60
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  '/api/products/{id}':
+    get:
+      tags:
+        - Products
+      description: 'Retorna um produto específico'
+      operationId: 5ac660674662b7b4d36cc0f0e3f648f0
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Product ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+        '404':
+          description: 'Error: Product not found.'
+  '/api/products/{id}/users':
+    get:
+      tags:
+        - Products
+      description: 'Retorna o funcionário vinculado ao produto'
+      operationId: 8dba1d4510699d8cbc7fa33dbcef248a
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Product ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+        '404':
+          description: 'Error: Product not found.'
+  /api/products/new:
+    post:
+      tags:
+        - Products
+      description: 'Cadastra uma novo produto'
+      operationId: 03d70e526c65b6ccf5c25e26a25d54b8
+      parameters:
+        -
+          name: Body
+          in: path
+          description: ''
+          required: true
+          schema:
+            properties:
+              nome:
+                type: string
+                example: 'Caixa de Som'
+              quantidade:
+                type: string
+                example: '675'
+              ncm:
+                type: string
+                example: '00000000'
+              data:
+                type: string
+                example: 2002/03/21
+              cpf_cadastro:
+                type: string
+                example: '58447018016'
+            type: object
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/employees/all:
+    get:
+      tags:
+        - Employees
+      description: 'Retorna todos os funcionários'
+      operationId: 38c548aebdca78801fa3eb0095081440
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  /api/employees:
+    get:
+      tags:
+        - Employees
+      description: 'Retorna uma lista paginada com 50 funcionários'
+      operationId: 438386c10d9ee63203567aeb88b28dad
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+  '/api/employees/{id}':
+    get:
+      tags:
+        - Employees
+      description: 'Retorna um funcionário específico'
+      operationId: 9576796fbf3e32b426217aed5f2bd812
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'Employee ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+        '404':
+          description: 'Error: User not found.'
+  '/api/employees/{id}/products':
+    get:
+      tags:
+        - Employees
+      description: 'Retorna os produtos no qual o funcionário está vinculado'
+      operationId: 398ea84cf8e76a1319921d3b94448137
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'Employee ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+        '404':
+          description: 'Error: User not found.'
+  '/api/employees/{id}/company':
+    get:
+      tags:
+        - Employees
+      description: 'Retorna a empresa na qual o funcionário está vinculado'
+      operationId: 9dd1aaee3450ebec3b3375b920edc293
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'Employee ID'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'Error: Unauthorized'
+        '404':
+          description: 'Error: User not found.'
+  /api/employees/new:
+    post:
+      tags:
+        - Employees
+      description: 'Cadastra uma novo funcionário'
+      operationId: 1762feede558ed4481a13148464e4c62
+      parameters:
+        -
+          name: Token
+          in: query
+          description: 'JWT Token'
+          required: true
+          schema:
+            type: string
+        -
+          name: Body
+          in: query
+          description: ''
+          required: true
+          schema:
+            properties:
+              nome:
+                type: string
+                example: Bender
+              telefone:
+                type: string
+                example: '49988548268'
+              cpf:
+                type: string
+                example: '58447018016'
+              data:
+                type: string
+                example: 2002/03/21
+              cnpj_empresa:
+                type: string
+                example: '22947693000167'
+            type: object
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Error: Bad Request'
+        '401':
+          description: 'Error: Unauthorized'
