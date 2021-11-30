@@ -12,17 +12,22 @@ class CompanyController extends Controller
 {
 
     /**
+     * @OA\SecurityScheme(
+     *      securityScheme="bearerAuth",
+     *      in="header",
+     *      name="bearer",
+     *      type="http",
+     *      scheme="bearer",
+     *      bearerFormat="JWT",
+     * ),
+     */
+
+    /**
      * @OA\Get(
      *     tags={"Companies"},
      *     path="/api/companies/all",
+     *     security={{"bearerAuth": {}}},
      *     description="Retorna todas as companhias",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -44,13 +49,7 @@ class CompanyController extends Controller
      *     tags={"Companies"},
      *     path="/api/companies",
      *     description="Retorna uma lista paginada com 50 companhias",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -72,16 +71,10 @@ class CompanyController extends Controller
      *     tags={"Companies"},
      *     path="/api/companies/{id}",
      *     description="Retorna uma comapanhia específica",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         @OA\Schema(type="integer"),
      *         description="Companie ID",
      *         required=true,
@@ -92,31 +85,33 @@ class CompanyController extends Controller
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="Error: Unauthorized"
-     *     )
+     *         description="Error: Unauthorized",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Error: Company not found",
+     *     ),
      * )
      */
     public function showCompany($id)
     {
-        return Company::findOrFail($id);
+        try {
+            return Company::findOrFail($id);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
     }
 
 
     /**
      * @OA\Get(
      *     tags={"Companies"},
-     *     path="/api/companies/{id}/users",
+     *     path="/api/companies/{id}/employee",
      *     description="Retorna os funcionários vinculados a companhia",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         @OA\Schema(type="integer"),
      *         description="Companie id",
      *         required=true,
@@ -133,7 +128,11 @@ class CompanyController extends Controller
      */
     public function usersByCompany($id)
     {
-        return Company::findOrFail($id)->users;
+        try {
+            return Company::find($id)->users;
+        } catch (\Throwable $th) {
+            return response()->json([]);
+        }
     }
 
 
@@ -142,13 +141,7 @@ class CompanyController extends Controller
      *     tags={"Companies"},
      *     path="/api/companies/new",
      *     description="Cadastra uma nova companhia",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *   @OA\Parameter(
      *     name="Body",
      *     in="query",

@@ -7,6 +7,7 @@ use App\Models\AuthorizedUser;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 class AdminController extends Controller
 {
     public function login(Request $request)
@@ -32,7 +33,7 @@ class AdminController extends Controller
         $user->token = null;
         $user->save();
 
-        return redirect('admin');
+        return redirect('admin_login');
     }
 
     public function deleteUserPermanently(int $id)
@@ -41,7 +42,7 @@ class AdminController extends Controller
         $this->setEmailBlacklist($user['email']);
         $user->delete();
 
-        return redirect('admin');
+        return redirect('admin_login');
     }
 
     public function setEmailBlacklist(string $email)

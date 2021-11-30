@@ -12,6 +12,34 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
+    /**
+     * @OA\Post(
+     *     tags={"Auth"},
+     *     path="/api/register",
+     *     description="Registra suas credenciais na base, para posteriormente ser feito login e obter o token.",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Account created",
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *     ),
+     *     @OA\Parameter(
+     *     name="Body",
+     *     in="query",
+     *     description="",
+     *     required=true,
+     *     @OA\Schema(
+     *          type="object",
+     *          @OA\Property(property="name", type="string", example="Joao"),
+     *          @OA\Property(property="email", type="string", example="joao@gmail.com"),
+     *          @OA\Property(property="password", type="string", example="12345"),
+     *          @OA\Property(property="password_confirmation", type="string", example="12345"),
+     *     ),
+     *   )
+     * )
+     */
     public function register(Request $request)
     {
         $this->validate($request, [
@@ -38,6 +66,35 @@ class AuthController extends Controller
             return response()->json(['message' => 'User Registration Failed!'], 409);
         }
     }
+
+
+    /**
+     * @OA\Post(
+     *     tags={"Auth"},
+     *     path="/api/login",
+     *     description="Rota utilizada para obter o token de acesso.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token generated",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Incorrect credentials",
+     *     ),
+     *     @OA\Parameter(
+     *     name="Body",
+     *     in="query",
+     *     description="",
+     *     required=true,
+     *     @OA\Schema(
+     *          type="object",
+     *          @OA\Property(property="email", type="string", example="joao@gmail.com"),
+     *          @OA\Property(property="password", type="string", example="12345"),
+     *     ),
+     *   )
+     * )
+     */
+
     /**
      * Get a JWT via given credentials.
      *
@@ -48,7 +105,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Incorrect credentials'], 401);
         }
 
         $user = AuthorizedUser::where('email', $credentials['email'])->first();
@@ -69,6 +126,22 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * @OA\Get(
+     *     tags={"Auth"},
+     *     path="/api/logout",
+     *     description="Faz logout, revogando o token atual.",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token revoked",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     * )
+     */
     /**
      * Log the user out (Invalidate the token).
      *

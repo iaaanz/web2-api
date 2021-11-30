@@ -15,13 +15,7 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees/all",
      *     description="Retorna todos os funcionários",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -43,13 +37,7 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees",
      *     description="Retorna uma lista paginada com 50 funcionários",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -71,16 +59,10 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees/{id}",
      *     description="Retorna um funcionário específico",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         @OA\Schema(type="integer"),
      *         description="Employee ID",
      *         required=true,
@@ -95,7 +77,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Error: User not found."
+     *         description="Error: Employee not found."
      *     ),
      * )
      */
@@ -104,7 +86,7 @@ class UserController extends Controller
         try {
             return User::findOrFail($id);
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'User not found.'], 404);
+            return response()->json(['error' => 'Employee not found.'], 404);
         }
     }
 
@@ -114,16 +96,10 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees/{id}/products",
      *     description="Retorna os produtos no qual o funcionário está vinculado",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         @OA\Schema(type="integer"),
      *         description="Employee ID",
      *         required=true,
@@ -136,10 +112,6 @@ class UserController extends Controller
      *         response=401,
      *         description="Error: Unauthorized"
      *     ),
-     *      *     @OA\Response(
-     *         response=404,
-     *         description="Error: User not found."
-     *     ),
      * )
      */
     public function productsByUser($id)
@@ -147,7 +119,7 @@ class UserController extends Controller
         try {
             return User::findOrFail($id)->products;
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'User not found.'], 404);
+            return response()->json([]);
         }
     }
 
@@ -157,16 +129,10 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees/{id}/company",
      *     description="Retorna a empresa na qual o funcionário está vinculado",
-     *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
+     *     security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         @OA\Schema(type="integer"),
      *         description="Employee ID",
      *         required=true,
@@ -179,18 +145,14 @@ class UserController extends Controller
      *         response=401,
      *         description="Error: Unauthorized"
      *     ),
-     *      *     @OA\Response(
-     *         response=404,
-     *         description="Error: User not found."
-     *     ),
      * )
      */
     public function companyByUser($id)
     {
         try {
-            return User::findOrFail($id)->products;
+            return User::findOrFail($id)->companies;
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'User not found.'], 404);
+            return response()->json([]);
         }
     }
 
@@ -200,14 +162,8 @@ class UserController extends Controller
      *     tags={"Employees"},
      *     path="/api/employees/new",
      *     description="Cadastra uma novo funcionário",
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
-     *         name="Token",
-     *         in="query",
-     *         @OA\Schema(type="string"),
-     *         description="JWT Token",
-     *         required=true,
-     *     ),
-     *   @OA\Parameter(
      *     name="Body",
      *     in="query",
      *     description="",

@@ -1,15 +1,17 @@
 <?php
 
+use App\Models\AuthorizedUser;
+
+session_start();
+
 $router->get('/docs', function () {
     return view('docs');
 });
 
 $router->get('/', 'ConsultController@home');
+
 $router->get('/admin_login', function () {
     return view('admin_login');
-});
-
-$router->get('/admin', function () {
 });
 
 $router->post('/admin_login', [
@@ -26,20 +28,20 @@ $router->get('/admin/delete/{id}', [
 ]);
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->post('/getToken', 'AuthController@register');
+    $router->post('/register', 'AuthController@register');
     $router->post('/login', 'AuthController@login');
-    $router->get('/logout', 'AuthController@logout');
 });
 
-$router->group(['prefix' => 'api'], function () use ($router) {
-    // $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+// $router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+    $router->get('/logout', 'AuthController@logout');
     $router->get('/me', 'AuthController@me');
 
     $router->group(['prefix' => 'companies'], function () use ($router) {
         $router->get('/all', 'CompanyController@allCompanies');
         $router->get('/', 'CompanyController@paginatedCompanies');
         $router->get('/{id}', 'CompanyController@showCompany');
-        $router->get('/{id}/employees', 'CompanyController@usersByCompany');
+        $router->get('/{id}/employee', 'CompanyController@usersByCompany');
         $router->post('/new', 'CompanyController@storeCompany');
     });
 

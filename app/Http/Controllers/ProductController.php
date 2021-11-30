@@ -15,6 +15,7 @@ class ProductController extends Controller
      *     tags={"Products"},
      *     path="/api/products/all",
      *     description="Retorna todos os produtos",
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -36,6 +37,7 @@ class ProductController extends Controller
      *     tags={"Products"},
      *     path="/api/products",
      *     description="Retorna uma lista paginada com 50 produtos",
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -57,12 +59,7 @@ class ProductController extends Controller
      *     tags={"Products"},
      *     path="/api/products/{id}",
      *     description="Retorna um produto específico",
-     *      @OA\SecurityScheme(
-     *          securityScheme="basicAuth",
-     *          type="http",
-     *          in="header",
-     *          bearerFormat="JWt"
-     *      ),
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -97,9 +94,10 @@ class ProductController extends Controller
     /**
      * @OA\Get(
      *     tags={"Products"},
-     *     path="/api/products/{id}/users",
+     *     path="/api/products/{id}/employee",
      *     description="Retorna o funcionário vinculado ao produto",
-     *      @OA\Parameter(
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         @OA\Schema(type="integer"),
@@ -114,10 +112,6 @@ class ProductController extends Controller
      *         response=401,
      *         description="Error: Unauthorized"
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Error: Product not found."
-     *     ),
      * )
      */
     public function userByProduct($id)
@@ -125,7 +119,7 @@ class ProductController extends Controller
         try {
             return Product::findOrFail($id);
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Product not found.'], 404);
+            return response()->json([]);
         }
     }
 
@@ -135,9 +129,10 @@ class ProductController extends Controller
      *     tags={"Products"},
      *     path="/api/products/new",
      *     description="Cadastra uma novo produto",
-     *   @OA\Parameter(
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
      *     name="Body",
-     *     in="path",
+     *     in="query",
      *     description="",
      *     required=true,
      *     @OA\Schema(
